@@ -6,12 +6,12 @@ lms-mcp = { workspace = true }
 
 [dependency-groups]
 dev = [
-  "poethepoet>=0.40.0",
+  "poethepoet==0.42.1",
   "pyright==1.1.408",
   "pytest==9.0.2",
-  "pytest-asyncio>=0.25.0",
-  "ruff==0.14.14",
-  "ty==0.0.13",
+  "pytest-asyncio==1.3.0",
+  "ruff==0.15.8",
+  "ty==0.0.26",
 ]
 
 [tool.ruff]
