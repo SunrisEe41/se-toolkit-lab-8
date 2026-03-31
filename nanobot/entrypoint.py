@@ -20,12 +20,14 @@ import sys
 from pathlib import Path
 
 
-def resolve_config() -> str:
+def resolve_config() -> tuple[str, str]:
     """Read config.json, override with env vars, write resolved config."""
     # Determine paths
     script_dir = Path(__file__).parent.resolve()
     config_path = script_dir / "config.json"
-    resolved_path = script_dir / "config.resolved.json"
+    # Write resolved config to /tmp for write access by non-root user
+    resolved_path = Path("/tmp/nanobot/config.resolved.json")
+    resolved_path.parent.mkdir(parents=True, exist_ok=True)
     workspace_dir = script_dir / "workspace"
 
     if not config_path.exists():
