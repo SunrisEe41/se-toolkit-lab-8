@@ -10,8 +10,11 @@ Environment variables read:
     - LLM_API_MODEL -> agents.defaults.model
     - NANOBOT_GATEWAY_CONTAINER_ADDRESS -> gateway.host
     - NANOBOT_GATEWAY_CONTAINER_PORT -> gateway.port
+    - NANOBOT_WEBCHAT_CONTAINER_ADDRESS -> channels.webchat.host
+    - NANOBOT_WEBCHAT_CONTAINER_PORT -> channels.webchat.port
     - NANOBOT_LMS_BACKEND_URL -> tools.mcpServers.lms.args[2] and env
     - NANOBOT_LMS_API_KEY -> tools.mcpServers.lms.env
+    - NANOBOT_ACCESS_KEY -> channels.webchat.accessKey
 """
 
 import json
@@ -59,6 +62,24 @@ def resolve_config() -> tuple[str, str]:
     if gateway_port:
         config["gateway"]["port"] = int(gateway_port)
 
+    # Override webchat channel settings
+    webchat_host = os.environ.get("NANOBOT_WEBCHAT_CONTAINER_ADDRESS")
+    webchat_port = os.environ.get("NANOBOT_WEBCHAT_CONTAINER_PORT")
+    access_key = os.environ.get("NANOBOT_ACCESS_KEY")
+
+    if "webchat" not in config["channels"]:
+        config["channels"]["webchat"] = {}
+
+    if webchat_host:
+        config["channels"]["webchat"]["host"] = webchat_host
+    if webchat_port:
+        config["channels"]["webchat"]["port"] = int(webchat_port)
+    if access_key:
+        config["channels"]["webchat"]["accessKey"] = access_key
+    config["channels"]["webchat"]["enabled"] = True
+    if "allowFrom" not in config["channels"]["webchat"]:
+        config["channels"]["webchat"]["allowFrom"] = ["*"]
+
     # Override MCP LMS server settings
     lms_backend_url = os.environ.get("NANOBOT_LMS_BACKEND_URL")
     lms_api_key = os.environ.get("NANOBOT_LMS_API_KEY")
@@ -90,6 +111,25 @@ def resolve_config() -> tuple[str, str]:
         if "env" not in lms_config:
             lms_config["env"] = {}
         lms_config["env"]["NANOBOT_LMS_API_KEY"] = lms_api_key
+
+    # Configure mcp-webchat MCP server for structured UI
+    if "mcp_webchat" not in config["tools"]["mcpServers"]:
+        config["tools"]["mcpServers"]["mcp_webchat"] = {
+            "command": "python",
+            "args": ["-m", "mcp_webchat"],
+            "env": {},
+        }
+
+    webchat_mcp = config["tools"]["mcpServers"]["mcp_webchat"]
+    if "env" not in webchat_mcp:
+        webchat_mcp["env"] = {}
+    # Pass relay URL and token if available
+    ui_relay_url = os.environ.get("NANOBOT_UI_RELAY_URL")
+    ui_relay_token = os.environ.get("NANOBOT_UI_RELAY_TOKEN")
+    if ui_relay_url:
+        webchat_mcp["env"]["NANOBOT_UI_RELAY_URL"] = ui_relay_url
+    if ui_relay_token:
+        webchat_mcp["env"]["NANOBOT_UI_RELAY_TOKEN"] = ui_relay_token
 
     # Write resolved config
     with open(resolved_path, "w", encoding="utf-8") as f:
