@@ -99,10 +99,61 @@ Please let me know which lab you're interested in, or if you'd like to see score
 ## Task 2A — Deployed agent
 
 <!-- Paste a short nanobot startup log excerpt showing the gateway started inside Docker -->
+backend-1  | 2026-03-31 15:18:47,179 INFO [lms_backend.main] [main.py:74] [trace_id=fb864135dae1714f827f1fffdebe6a9c span_id=9b9566ad6553ff22 resource.service.name=Learning Management Service trace_sampled=True] - request_completed
+backend-1  | INFO:     172.21.0.8:53838  - "GET /items/ HTTP/1.1" 200 OK
+backend-1  | INFO:     172.21.0.8:53838 - "GET /items/ HTTP/1.1" 200
+backend-1  | 2026-03-31 15:29:43,276 INFO [lms_backend.main] [main.py:62] [trace_id=e17027ae2810c4e82f9fea35606f16aa span_id=70e50fed3ae682db resource.service.name=Learning Management Service trace_sampled=True] - request_started
+backend-1  | 2026-03-31 15:29:43,278 INFO [lms_backend.auth] [auth.py:30] [trace_id=e17027ae2810c4e82f9fea35606f16aa span_id=70e50fed3ae682db resource.service.name=Learning Management Service trace_sampled=True] - auth_success
+backend-1  | 2026-03-31 15:29:43,279 INFO [lms_backend.db.items] [items.py:16] [trace_id=e17027ae2810c4e82f9fea35606f16aa span_id=70e50fed3ae682db resource.service.name=Learning Management Service trace_sampled=True] - db_query
+backend-1  | 2026-03-31 15:29:43,286 INFO [lms_backend.main] [main.py:74] [trace_id=e17027ae2810c4e82f9fea35606f16aa span_id=70e50fed3ae682db resource.service.name=Learning Management Service trace_sampled=True] - request_completed
+backend-1  | INFO:     172.21.0.8:40776 - "GET /items/ HTTP/1.1" 200
+backend-1  | INFO:     172.21.0.8:40776 - "GET /items/ HTTP/1.1" 200 OK
+backend-1  | 2026-03-31 20:08:30,491 INFO [lms_backend.main] [main.py:62] [trace_id=cee4563393e690c17cb389e43e8c1c93 span_id=84bd791c94e15921 resource.service.name=Learning Management Service trace_sampled=True] - request_started
+backend-1  | 2026-03-31 20:08:30,906 INFO [lms_backend.auth] [auth.py:30] [trace_id=cee4563393e690c17cb389e43e8c1c93 span_id=84bd791c94e15921 resource.service.name=Learning Management Service trace_sampled=True] - auth_success
+backend-1  | 2026-03-31 20:08:31,018 INFO [lms_backend.db.items] [items.py:16] [trace_id=cee4563393e690c17cb389e43e8c1c93 span_id=84bd791c94e15921 resource.service.name=Learning Management Service trace_sampled=True] - db_query
+backend-1  | 2026-03-31 20:08:32,122 INFO [lms_backend.main] [main.py:74] [trace_id=cee4563393e690c17cb389e43e8c1c93 span_id=84bd791c94e15921 resource.service.name=Learning Management Service trace_sampled=True] - request_completed
+backend-1  | INFO:     172.21.0.8:41878 - "GET /items/ HTTP/1.1" 200 OK
+backend-1  | INFO:     172.21.0.8:41878 - "GET /items/ HTTP/1.1" 200
+backend-1  | 2026-03-31 20:08:41,386 INFO [lms_backend.main] [main.py:62] [trace_id=6a9b883c106c917ac4733a009f779d6c span_id=519f2b0cec5c959e resource.service.name=Learning Management Service trace_sampled=True] - request_started
+backend-1  | 2026-03-31 20:08:41,390 INFO [lms_backend.auth] [auth.py:30] [trace_id=6a9b883c106c917ac4733a009f779d6c span_id=519f2b0cec5c959e resource.service.name=Learning Management Service trace_sampled=True] - auth_success
+backend-1  | 2026-03-31 20:08:41,391 INFO [lms_backend.db.items] [items.py:16] [trace_id=6a9b883c106c917ac4733a009f779d6c span_id=519f2b0cec5c959e resource.service.name=Learning Management Service trace_sampled=True] - db_query
+backend-1  | 2026-03-31 20:08:41,488 INFO [lms_backend.main] [main.py:74] [trace_id=6a9b883c106c917ac4733a009f779d6c span_id=519f2b0cec5c959e resource.service.name=Learning Management Service trace_sampled=True] - request_completed
+backend-1  | INFO:     172.21.0.8:44616 - "GET /items/ HTTP/1.1" 200
+backend-1  | INFO:     172.21.0.8:44616 - "GET /items/ HTTP/1.1" 200 OK
+backend-1  | 2026-03-31 20:08:44,268 INFO [lms_backend.main] [main.py:62] [trace_id=7c4c853b0c9699a2d54a2fff3ae0da73 span_id=81f4568beac3d09a resource.service.name=Learning Management Service trace_sampled=True] - request_started
+backend-1  | 2026-03-31 20:08:44,272 INFO [lms_backend.auth] [auth.py:30] [trace_id=7c4c853b0c9699a2d54a2fff3ae0da73 span_id=81f4568beac3d09a resource.service.name=Learning Management Service trace_sampled=True] - auth_success
+backend-1  | 2026-03-31 20:08:44,274 INFO [lms_backend.db.items] [items.py:16] [trace_id=7c4c853b0c9699a2d54a2fff3ae0da73 span_id=81f4568beac3d09a resource.service.name=Learning Management Service trace_sampled=True] - db_query
+backend-1  | 2026-03-31 20:08:44,343 INFO [lms_backend.main] [main.py:74] [trace_id=7c4c853b0c9699a2d54a2fff3ae0da73 span_id=81f4568beac3d09a resource.service.name=Learning Management Service trace_sampled=True] - request_completed
+backend-1  | INFO:     172.21.0.8:44616 - "GET /items/ HTTP/1.1" 200
+backend-1  | INFO:     172.21.0.8:44616 - "GET /items/ HTTP/1.1" 200 OK
+backend-1  | 2026-03-31 20:17:14,209 INFO [lms_backend.main] [main.py:62] [trace_id=bed2bfd059b07f27c1bcd36b13fd3b1a span_id=9f28061b1fd3e97d resource.service.name=Learning Management Service trace_sampled=True] - request_started
+backend-1  | 2026-03-31 20:17:14,234 INFO [lms_backend.main] [main.py:74] [trace_id=bed2bfd059b07f27c1bcd36b13fd3b1a span_id=9f28061b1fd3e97d resource.service.name=Learning Management Service trace_sampled=True] - request_completed
+backend-1  | INFO:     172.21.0.1:38766 - "GET /health HTTP/1.1" 404
+backend-1  | INFO:     172.21.0.1:38766 - "GET /health HTTP/1.1" 404 Not Found
+backend-1  | 2026-03-31 20:17:25,032 INFO [lms_backend.main] [main.py:62] [trace_id=31df2dc66304717a16e5e8614af36a88 span_id=53df67f868ca3055 resource.service.name=Learning Management Service trace_sampled=True] - request_started
+backend-1  | 2026-03-31 20:17:25,057 INFO [lms_backend.main] [main.py:74] [trace_id=31df2dc66304717a16e5e8614af36a88 span_id=53df67f868ca3055 resource.service.name=Learning Management Service trace_sampled=True] - request_completed
+backend-1  | INFO:     172.21.0.1:51416 - "GET /docs HTTP/1.1" 200
+backend-1  | INFO:     172.21.0.1:51416 - "GET /docs HTTP/1.1" 200 OK
+backend-1  | 2026-03-31 20:17:37,241 INFO [lms_backend.main] [main.py:62] [trace_id=f2f1cdc46ce33932efa160cd57b04e42 span_id=740eab74b2024dea resource.service.name=Learning Management Service trace_sampled=True] - request_started
+backend-1  | 2026-03-31 20:17:37,247 INFO [lms_backend.auth] [auth.py:30] [trace_id=f2f1cdc46ce33932efa160cd57b04e42 span_id=740eab74b2024dea resource.service.name=Learning Management Service trace_sampled=True] - auth_success
+backend-1  | 2026-03-31 20:17:37,249 INFO [lms_backend.db.items] [items.py:16] [trace_id=f2f1cdc46ce33932efa160cd57b04e42 span_id=740eab74b2024dea resource.service.name=Learning Management Service trace_sampled=True] - db_query
+backend-1  | 2026-03-31 20:17:37,306 INFO [lms_backend.main] [main.py:74] [trace_id=f2f1cdc46ce33932efa160cd57b04e42 span_id=740eab74b2024dea resource.service.name=Learning Management Service trace_sampled=True] - request_completed
+backend-1  | INFO:     172.21.0.1:37006 - "GET /items/ HTTP/1.1" 200 OK
+backend-1  | INFO:     172.21.0.1:37006 - "GET /items/ HTTP/1.1" 200
+backend-1  | 2026-03-31 20:17:43,390 INFO [lms_backend.main] [main.py:62] [trace_id=fc4fd5ab933a7122e17218848cca3598 span_id=2f31b180988e53eb resource.service.name=Learning Management Service trace_sampled=True] - request_started
+backend-1  | 2026-03-31 20:17:43,458 INFO [lms_backend.auth] [auth.py:30] [trace_id=fc4fd5ab933a7122e17218848cca3598 span_id=2f31b180988e53eb resource.service.name=Learning Management Service trace_sampled=True] - auth_success
+backend-1  | 2026-03-31 20:17:44,208 INFO [lms_backend.main] [main.py:74] [trace_id=fc4fd5ab933a7122e17218848cca3598 span_id=2f31b180988e53eb resource.service.name=Learning Management Service trace_sampled=True] - request_completed
+backend-1  | INFO:     172.21.0.1:48684 - "GET /items/1 HTTP/1.1" 200
+backend-1  | INFO:     172.21.0.1:48684 - "GET /items/1 HTTP/1.1" 200 OK
+backend-1  | 2026-03-31 20:17:51,238 INFO [lms_backend.main] [main.py:62] [trace_id=10662194ce1cea464dfdaad14e6e2f28 span_id=67f3e67b6c40cc0c resource.service.name=Learning Management Service trace_sampled=True] - request_started
+backend-1  | 2026-03-31 20:17:51,241 INFO [lms_backend.main] [main.py:74] [trace_id=10662194ce1cea464dfdaad14e6e2f28 span_id=67f3e67b6c40cc0c resource.service.name=Learning Management Service trace_sampled=True] - request_completed
+backend-1  | INFO:     172.21.0.1:33514 - "GET /labs/ HTTP/1.1" 404 Not Found
+backend-1  | INFO:     172.21.0.1:33514 - "GET /labs/ HTTP/1.1" 404
 
 ## Task 2B — Web client
 
 <!-- Screenshot of a conversation with the agent in the Flutter web app -->
+![alt text](image.png)
 
 ## Task 3A — Structured logging
 
