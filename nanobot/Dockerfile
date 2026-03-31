@@ -1,7 +1,3 @@
-Dockerfile выглядит почти правильно, но есть проблема с логикой uv sync.
-
-Давайте упростим и сделаем надёжнее:
-
 # nanobot Dockerfile - multi-stage build with uv
 # Pattern: backend/Dockerfile + qwen-code-api/Dockerfile
 
