@@ -21,9 +21,7 @@ Then the loop repeats with the new information.
 
 Visual Flow
 
-
  Perceive → Reason → Act → Observe → (back to Perceive)
-
 
 Why It Matters
 
@@ -35,34 +33,31 @@ This loop enables agents to:
  • Work autonomously toward a goal
 
 As nanobot, I follow this loop for every task you give me. For example, if you ask me to "set up a  
-project," I'll perceive your request, reason about the steps needed, act by creating files and      
+project," I'll perceive your request, reason about the steps needed, act by creating files and
 running commands, observe the results, and continue until the project is set up.
 
-Based on the workspace, Lab 8 — The Agent is the Interface is the available lab in this LMS.        
+Based on the workspace, Lab 8 — The Agent is the Interface is the available lab in this LMS.
 
 Required Tasks:
 
-
- Task  Description                                                                    
+ Task  Description
  ─────────────────────────────────────────────────────────────────────────────────────
  1     Set Up the Agent — install nanobot, configure Qwen API, add MCP tools
  2     Deploy and Connect a Web Client — Dockerize nanobot, add WebSocket + Flutter UI
  3     Give the Agent New Eyes — build log/trace MCP tools for observability
  4     Diagnose a Failure — investigate, schedule health checks, fix a bug
 
-
 Optional Tasks:
 
-
- Task  Description                                                
+ Task  Description
  ─────────────────────────────────────────────────────────────────
  1     Add a Telegram Bot Client — same agent, different interface
 
-
 The LMS backend provides APIs for items, interactions, and learners, backed by PostgreSQL. The lab  
-focuses on building nanobot as an AI agent interface to query this system and observability data.   
+focuses on building nanobot as an AI agent interface to query this system and observability data.
 
 Would you like details on a specific task?
+
 ## Task 1B — Agent with LMS tools
 
 <!-- Paste the agent's response to "What labs are available?" and "Describe the architecture of the LMS system" -->
@@ -79,12 +74,27 @@ Here are the available labs:
 
 Is there a specific lab you'd like to explore or get more information about?
 
-
-Yes, the LMS backend is healthy. It currently has 56 items in the system and no errors reported.    
+Yes, the LMS backend is healthy. It currently has 56 items in the system and no errors reported.
 
 ## Task 1C — Skill prompt
 
 <!-- Paste the agent's response to "Show me the scores" (without specifying a lab) -->
+I'll help you check the scores. First, let me see what labs are available in the LMS.
+2026-03-31 18:29:43.262 | INFO     | nanobot.agent.loop:_prepare_tools:253 - Tool call: mcp_lms_lms_labs({})
+
+🐈 nanobot
+There are 8 labs available. Which lab would you like to see the scores for? Here are the options:
+
+ 1 Lab 01 – Products, Architecture & Roles
+ 2 Lab 02 — Run, Fix, and Deploy a Backend Service
+ 3 Lab 03 — Backend API: Explore, Debug, Implement, Deploy
+ 4 Lab 04 — Testing, Front-end, and AI Agents
+ 5 Lab 05 — Data Pipeline and Analytics Dashboard
+ 6 Lab 06 — Build Your Own Agent
+ 7 Lab 07 — Build a Client with an AI Coding Agent
+ 8 lab-08
+
+Please let me know which lab you're interested in, or if you'd like to see scores for all labs.
 
 ## Task 2A — Deployed agent
 
