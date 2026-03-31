@@ -20,9 +20,12 @@ WORKDIR /app
 COPY pyproject.toml ./pyproject.toml
 COPY entrypoint.py ./entrypoint.py
 
+COPY --from=workspace mcp/mcp-lms ./mcp/mcp-lms
+
+RUN sed -i 's|mcp-lms = { workspace = true, editable = true }|mcp-lms = { path = "mcp/mcp-lms", editable = true }|' pyproject.toml
 # Sync nanobot dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen
+    uv sync 
 
 # ---
 # Stage 2: Final image without uv
