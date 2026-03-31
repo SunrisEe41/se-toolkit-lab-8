@@ -31,8 +31,6 @@ COPY --from=workspace nanobot-websocket-channel/nanobot-channel-protocol /app/na
 COPY --from=workspace nanobot-websocket-channel/nanobot-webchat /app/nanobot-websocket-channel/nanobot-webchat
 COPY --from=workspace nanobot-websocket-channel/mcp-webchat /app/nanobot-websocket-channel/mcp-webchat
 
-# Copy mcp-obs package (required for observability tools)
-COPY --from=workspace mcp/mcp-obs /app/mcp/mcp-obs
 
 # Copy nanobot package files
 COPY pyproject.toml /app/nanobot/pyproject.toml
