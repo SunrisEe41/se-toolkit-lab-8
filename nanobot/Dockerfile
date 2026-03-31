@@ -1,3 +1,7 @@
+Dockerfile выглядит почти правильно, но есть проблема с логикой uv sync.
+
+Давайте упростим и сделаем надёжнее:
+
 # nanobot Dockerfile - multi-stage build with uv
 # Pattern: backend/Dockerfile + qwen-code-api/Dockerfile
 
@@ -17,18 +21,15 @@ ENV UV_PYTHON_DOWNLOADS=0
 
 WORKDIR /app
 
-# Copy workspace root files for dependency resolution
-COPY pyproject.toml uv.lock ./
+# Copy root workspace files for dependency resolution
+COPY --from=workspace pyproject.toml uv.lock ./
 
-# Sync nanobot dependencies (no install project, just deps)
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-install-project
+# Copy nanobot files first (for uv sync)
+COPY --from=workspace nanobot/pyproject.toml ./nanobot/pyproject.toml
+COPY pyproject.toml ./nanobot/pyproject.toml
+COPY entrypoint.py ./nanobot/entrypoint.py
 
-# Copy nanobot package files
-COPY nanobot/pyproject.toml ./nanobot/pyproject.toml
-COPY nanobot/entrypoint.py ./nanobot/entrypoint.py
-
-# Sync nanobot project with dependencies
+# Sync all dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen
 
