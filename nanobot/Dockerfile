@@ -1,8 +1,8 @@
-# nanobot Dockerfile - multi-stage build with uv
-# Runs as root for simplicity (HOST_UID/GID handled by docker-compose user setting)
+# Adapted from https://github.com/astral-sh/uv-docker-example/blob/fa761744819c05f4ce207bde1f0a396f6be3915f/multistage.Dockerfile
+# Also see https://docs.astral.sh/uv/guides/integration/docker/
 
 # ---
-# Stage 1: Build the application in the /app directory
+# Stage 1: build the application in the `/app` directory.
 # ---
 
 ARG REGISTRY_PREFIX_DOCKER_HUB
@@ -12,54 +12,77 @@ ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 # Omit development dependencies
 ENV UV_NO_DEV=1
 
-# Disable Python downloads
+# Disable Python downloads, because we want to use the system interpreter
+# across both images. If using a managed Python version, it needs to be
+# copied from the build image into the final image; see `standalone.Dockerfile`
+# for an example.
 ENV UV_PYTHON_DOWNLOADS=0
 
 WORKDIR /app
 
-# Copy nanobot files
-COPY pyproject.toml ./pyproject.toml
-COPY entrypoint.py ./entrypoint.py
+# Copy root workspace files for dependency resolution
+COPY --from=workspace pyproject.toml uv.lock /app/
 
-# Copy mcp-lms for the editable install (from workspace context)
-COPY --from=workspace mcp/mcp-lms ./mcp/mcp-lms
+# Copy mcp-lms source (required for editable install)
+COPY --from=workspace mcp/mcp-lms /app/mcp/mcp-lms
 
-# Rewrite mcp-lms workspace source to direct path for Docker build
-RUN sed -i 's|mcp-lms = { workspace = true, editable = true }|mcp-lms = { path = "mcp/mcp-lms", editable = true }|' pyproject.toml
+# Copy nanobot-websocket-channel packages (required for webchat)
+COPY --from=workspace nanobot-websocket-channel/nanobot-channel-protocol /app/nanobot-websocket-channel/nanobot-channel-protocol
+COPY --from=workspace nanobot-websocket-channel/nanobot-webchat /app/nanobot-websocket-channel/nanobot-webchat
+COPY --from=workspace nanobot-websocket-channel/mcp-webchat /app/nanobot-websocket-channel/mcp-webchat
 
-# Sync nanobot dependencies
+# Copy mcp-obs package (required for observability tools)
+COPY --from=workspace mcp/mcp-obs /app/mcp/mcp-obs
+
+# Copy nanobot package files
+COPY pyproject.toml /app/nanobot/pyproject.toml
+
+# Sync dependencies (install workspace packages without --no-install-workspace)
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen
+    uv sync --frozen --package nanobot
+
+# Copy the rest of the nanobot package
+COPY . /app/nanobot
 
 # ---
-# Stage 2: Final image without uv
+# Stage 2: use a final image without uv
 # ---
 
 ARG REGISTRY_PREFIX_DOCKER_HUB
 FROM ${REGISTRY_PREFIX_DOCKER_HUB}python:3.14.2-slim-bookworm
+# It is important to use the image that matches the builder, as the path to the
+# Python executable must be the same, e.g., using `python:3.11-slim-bookworm`
+# will fail.
 
 # Set environment variables for Python and application
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+# Make sure we use UTF-8 encoding
 ENV LANG=C.UTF-8
 
-WORKDIR /app
+# Accept build args for non-root user
+ARG APP_UID=999
+ARG APP_GID=999
+
+# Setup a non-root user with configurable UID/GID
+RUN groupadd --system --gid ${APP_GID} appgroup \
+    && useradd --system --gid ${APP_GID} --uid ${APP_UID} --create-home appuser
 
 # Copy the application from the builder
-COPY --from=builder /app /app
+COPY --from=builder --chown=appuser:appgroup /app /app
 
-# Create writable directories for nanobot runtime (writable by any user for docker-compose volume mounts)
-RUN mkdir -p /app/nanobot/workspace/memory \
-    && mkdir -p /app/nanobot/workspace/sessions \
-    && mkdir -p /app/nanobot/workspace/cron \
+# Create writable workspace directories for cron and other runtime data
+# Make them writable by any user since container may run as host UID
+RUN mkdir -p /app/nanobot/workspace/cron /app/nanobot/workspace/memory \
     && chmod -R 777 /app/nanobot/workspace
 
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
 
-# Healthcheck
-HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:18790/health')" || exit 1
+# Use the non-root user to run our application
+USER appuser
 
-# Run the entrypoint
+# Use `/app` as the working directory
+WORKDIR /app
+
 CMD ["python", "/app/nanobot/entrypoint.py"]
