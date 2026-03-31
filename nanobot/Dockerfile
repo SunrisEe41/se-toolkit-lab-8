@@ -23,16 +23,16 @@ COPY --from=workspace pyproject.toml uv.lock ./
 # Copy mcp-lms source (required for editable install)
 COPY --from=workspace mcp/mcp-lms ./mcp/mcp-lms
 
-# Copy nanobot package files
-COPY nanobot/pyproject.toml ./nanobot/pyproject.toml
-COPY nanobot/entrypoint.py ./nanobot/entrypoint.py
+# Copy nanobot package files (build context is ./nanobot)
+COPY pyproject.toml ./nanobot/pyproject.toml
+COPY entrypoint.py ./nanobot/entrypoint.py
 
 # Sync dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --package nanobot
 
 # Copy the rest of nanobot package
-COPY nanobot/ ./nanobot/
+COPY . ./nanobot/
 
 # ---
 # Stage 2: Final image without uv
