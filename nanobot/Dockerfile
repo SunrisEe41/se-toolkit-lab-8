@@ -1,5 +1,4 @@
 # nanobot Dockerfile - multi-stage build with uv
-# Pattern: backend/Dockerfile + qwen-code-api/Dockerfile
 
 # ---
 # Stage 1: Build the application in the /app directory
@@ -12,20 +11,16 @@ ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 # Omit development dependencies
 ENV UV_NO_DEV=1
 
-# Disable Python downloads - use the system interpreter across both images
+# Disable Python downloads
 ENV UV_PYTHON_DOWNLOADS=0
 
 WORKDIR /app
 
-# Copy root workspace files for dependency resolution
-COPY --from=workspace pyproject.toml uv.lock ./
+# Copy nanobot files
+COPY pyproject.toml ./pyproject.toml
+COPY entrypoint.py ./entrypoint.py
 
-# Copy nanobot files first (for uv sync)
-COPY --from=workspace nanobot/pyproject.toml ./nanobot/pyproject.toml
-COPY pyproject.toml ./nanobot/pyproject.toml
-COPY entrypoint.py ./nanobot/entrypoint.py
-
-# Sync all dependencies
+# Sync nanobot dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen
 
@@ -44,7 +39,7 @@ ENV LANG=C.UTF-8
 # Install gosu for user switching
 RUN apt-get update && apt-get install -y --no-install-recommends gosu && rm -rf /var/lib/apt/lists/*
 
-# Accept build args for user IDs (consistent with docker-compose user setting)
+# Accept build args for user IDs
 ARG APP_UID=1000
 ARG APP_GID=1000
 
@@ -69,9 +64,9 @@ WORKDIR /app
 # Switch to non-root user
 USER appuser
 
-# Healthcheck - check if gateway is responding
+# Healthcheck
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:18790/health')" || exit 1
 
-# Run the entrypoint which resolves config and launches nanobot gateway
+# Run the entrypoint
 CMD ["python", "/app/nanobot/entrypoint.py"]
