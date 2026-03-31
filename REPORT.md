@@ -100,7 +100,7 @@ Please let me know which lab you're interested in, or if you'd like to see score
 
 <!-- Paste a short nanobot startup log excerpt showing the gateway started inside Docker -->
 backend-1  | 2026-03-31 15:18:47,179 INFO [lms_backend.main] [main.py:74] [trace_id=fb864135dae1714f827f1fffdebe6a9c span_id=9b9566ad6553ff22 resource.service.name=Learning Management Service trace_sampled=True] - request_completed
-backend-1  | INFO:     172.21.0.8:53838 - "GET /items/ HTTP/1.1" 200 OK
+backend-1  | INFO:     172.21.0.8:53838  - "GET /items/ HTTP/1.1" 200 OK
 backend-1  | INFO:     172.21.0.8:53838 - "GET /items/ HTTP/1.1" 200
 backend-1  | 2026-03-31 15:29:43,276 INFO [lms_backend.main] [main.py:62] [trace_id=e17027ae2810c4e82f9fea35606f16aa span_id=70e50fed3ae682db resource.service.name=Learning Management Service trace_sampled=True] - request_started
 backend-1  | 2026-03-31 15:29:43,278 INFO [lms_backend.auth] [auth.py:30] [trace_id=e17027ae2810c4e82f9fea35606f16aa span_id=70e50fed3ae682db resource.service.name=Learning Management Service trace_sampled=True] - auth_success
