@@ -477,7 +477,60 @@ The LMS backend remains unhealthy with persistent errors. The issue is ongoing s
      2. Code fix (diff or description)
      3. Post-fix response to "What went wrong?" showing the real underlying failure
      4. Healthy follow-up report or transcript after recovery -->
-## Investigation Summary
+
+### Root Cause
+
+**Location:** `backend/src/lms_backend/routers/items.py`, function `get_items()` (lines 21-32)
+
+**The planted bug:** A broad `except Exception` handler was catching **all** exceptions including database connection failures, and converting them to HTTP 404 "Items not found":
+
+```python
+# BEFORE (buggy code)
+@router.get("/", response_model=list[ItemRecord])
+async def get_items(session: AsyncSession = Depends(get_session)):
+    try:
+        return await read_items(session)
+    except Exception as exc:  # ← Catches EVERYTHING including DB errors
+        logger.warning("items_list_failed_as_not_found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,  # ← Wrong status code!
+            detail="Items not found",
+        ) from exc
+```
+
+**Why this was wrong:**
+
+- `socket.gaierror` (DNS failure), `asyncpg.InterfaceError` (connection closed), and other `SQLAlchemyError` exceptions are database failures, not "item not found" errors
+- Returning 404 hides the real problem — operators see "Items not found" instead of "Database unavailable"
+- The correct response for database unavailability is **503 Service Unavailable**
+
+### Code Fix
+
+**Changed:** Catch `SQLAlchemyError` separately and return 503:
+
+```python
+# AFTER (fixed code)
+from sqlalchemy.exc import SQLAlchemyError
+
+@router.get("/", response_model=list[ItemRecord])
+async def get_items(session: AsyncSession = Depends(get_session)):
+    try:
+        return await read_items(session)
+    except SQLAlchemyError as exc:  # ← Catch DB errors specifically
+        logger.error("items_database_error", extra={"error": str(exc)})
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,  # ← Correct status
+            detail="Database service unavailable",
+        ) from exc
+    except Exception as exc:  # ← Other errors return 500
+        logger.error("items_internal_error", extra={"error": str(exc)})
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error",
+        ) from exc
+```
+
+### Investigation Summary
 
 **Log Evidence:**
 
@@ -524,3 +577,31 @@ The LMS backend tried to fetch items from the database (`GET /items/`), but it c
 4. Restart the LMS backend after the database is healthy
 ![alt text](image-7.png)
 
+## System Health Check (Last 2 Minutes) ✅
+
+**Overall Status: Healthy**
+
+| Metric | Status |
+|--------|--------|
+| Error Count | **0 errors** |
+| Recent Requests | All successful (HTTP 200) |
+| Database Connectivity | Operational |
+
+### Recent Activity Summary
+
+The system is operating normally. Recent traces show:
+
+- **Learning Management Service** is processing requests successfully
+- **PostgreSQL database** connections are working (postgres:5432)
+- **HTTP endpoints** returning 200 status codes
+- **Response times**: ~5-15ms for typical requests
+
+### Notable Observations
+
+Older traces (outside the 2-minute window) showed some intermittent issues:
+
+- DNS resolution failures (`socket.gaierror: [Errno -2] Name or service not known`) - **resolved**
+- HTTP 401 unauthorized responses - likely authentication-related, not system errors
+
+**Conclusion**: No issues detected in the last 2 minutes. The system is healthy and responding normally.
+![alt text](image-8.png)
