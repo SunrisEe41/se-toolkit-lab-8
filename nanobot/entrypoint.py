@@ -131,6 +131,25 @@ def resolve_config() -> tuple[str, str]:
     if ui_relay_token:
         webchat_mcp["env"]["NANOBOT_UI_RELAY_TOKEN"] = ui_relay_token
 
+    # Configure mcp-obs MCP server for VictoriaLogs and VictoriaTraces
+    if "mcp_obs" not in config["tools"]["mcpServers"]:
+        config["tools"]["mcpServers"]["mcp_obs"] = {
+            "command": "python",
+            "args": ["-m", "mcp_obs"],
+            "env": {},
+        }
+
+    obs_mcp = config["tools"]["mcpServers"]["mcp_obs"]
+    if "env" not in obs_mcp:
+        obs_mcp["env"] = {}
+    # Pass VictoriaLogs and VictoriaTraces URLs if available
+    obs_logs_url = os.environ.get("NANOBOT_VICTORIALOGS_URL")
+    obs_traces_url = os.environ.get("NANOBOT_VICTORIATRACES_URL")
+    if obs_logs_url:
+        obs_mcp["env"]["NANOBOT_VICTORIALOGS_URL"] = obs_logs_url
+    if obs_traces_url:
+        obs_mcp["env"]["NANOBOT_VICTORIATRACES_URL"] = obs_traces_url
+
     # Write resolved config
     with open(resolved_path, "w", encoding="utf-8") as f:
         json.dump(config, f, indent=2, ensure_ascii=False)
