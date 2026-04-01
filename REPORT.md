@@ -209,9 +209,122 @@ I have access to extensible skills including:
 ## Task 3A — Structured logging
 
 <!-- Paste happy-path and error-path log excerpts, VictoriaLogs query screenshot -->
-{"data":[{"processes": {"p1":{"serviceName":"Learning Management Service","tags": [{"key":"telemetry.auto.version","type":"string","value":"0.61b0"},{"key":"telemetry.sdk.language","type":"string","value":"python"},{"key":"telemetry.sdk.name","type":"string","value":"opentelemetry"},{"key":"telemetry.sdk.version","type":"string","value":"1.40.0"}]}},"spans": [{"duration":4563,"logs":[],"operationName":"SELECT db-lab-8","processID":"p1","references": [{"refType":"CHILD_OF","spanID":"4b29087ce1772eae","traceID":"ce2a5e00d0c9e33c1033a05d8b66f152"}],"spanID":"5a433bc7f27f9e2a","startTime":1775065822813780,"tags": [{"key":"span.kind","type":"string","value":"client"},{"key":"otel.scope.name","type":"string","value":"opentelemetry.instrumentation.sqlalchemy"},{"key":"otel.scope.version","type":"string","value":"0.61b0"},{"key":"db.name","type":"string","value":"db-lab-8"},{"key":"db.statement","type":"string","value":"SELECT item.id, item.type, item.parent_id, item.title, item.description, item.attributes, item.created_at \nFROM item"},{"key":"db.system","type":"string","value":"postgresql"},{"key":"db.user","type":"string","value":"postgres"},{"key":"net.peer.name","type":"string","value":"postgres"},{"key":"net.peer.port","type":"string","value":"5432"}],"traceID":"ce2a5e00d0c9e33c1033a05d8b66f152","warnings":null},{"duration":113,"logs":[],"operationName":"GET /items/ http send","processID":"p1","references": [{"refType":"CHILD_OF","spanID":"4b29087ce1772eae","traceID":"ce2a5e00d0c9e33c1033a05d8b66f152"}],"spanID":"1063432f78b46eff","startTime":1775065822821677,"tags": [{"key":"span.kind","type":"string","value":"internal"},{"key":"otel.scope.name","type":"string","value":"opentelemetry.instrumentation.fastapi"},{"key":"otel.scope.version","type":"string","value":"0.61b0"},{"key":"asgi.event.type","type":"string","value":"http.response.start"},{"key":"http.status_code","type":"string","value":"200"}],"traceID":"ce2a5e00d0c9e33c1033a05d8b66f152","warnings":null},{"duration":43,"logs":[],"operationName":"GET /items/ http send","processID":"p1","references": [{"refType":"CHILD_OF","spanID":"4b29087ce1772eae","traceID":"ce2a5e00d0c9e33c1033a05d8b66f152"}],"spanID":"34bb57dc8c957ca7","startTime":1775065822823075,"tags": [{"key":"span.kind","type":"string","value":"internal"},{"key":"otel.scope.name","type":"string","value":"opentelemetry.instrumentation.fastapi"},{"key":"otel.scope.version","type":"string","value":"0.61b0"},{"key":"asgi.event.type","type":"string","value":"http.response.body"}],"traceID":"ce2a5e00d0c9e33c1033a05d8b66f152","warnings":null},{"duration":27,"logs":[],"operationName":"GET /items/ http send","processID":"p1","references": [{"refType":"CHILD_OF","spanID":"4b29087ce1772eae","traceID":"ce2a5e00d0c9e33c1033a05d8b66f152"}],"spanID":"d9a1703f14193326","startTime":1775065822823282,"tags": [{"key":"span.kind","type":"string","value":"internal"},{"key":"otel.scope.name","type":"string","value":"opentelemetry.instrumentation.fastapi"},{"key":"otel.scope.version","type":"string","value":"0.61b0"},{"key":"asgi.event.type","type":"string","value":"http.response.body"}],"traceID":"ce2a5e00d0c9e33c1033a05d8b66f152","warnings":null},{"duration":345,"logs":[],"operationName":"connect","processID":"p1","references": [{"refType":"CHILD_OF","spanID":"4b29087ce1772eae","traceID":"ce2a5e00d0c9e33c1033a05d8b66f152"}],"spanID":"6d1c4b98cae17e62","startTime":1775065822812587,"tags": [{"key":"span.kind","type":"string","value":"client"},{"key":"otel.scope.name","type":"string","value":"opentelemetry.instrumentation.sqlalchemy"},{"key":"otel.scope.version","type":"string","value":"0.61b0"},{"key":"db.name","type":"string","value":"db-lab-8"},{"key":"db.system","type":"string","value":"postgresql"},{"key":"db.user","type":"string","value":"postgres"},{"key":"net.peer.name","type":"string","value":"postgres"},{"key":"net.peer.port","type":"string","value":"5432"}],"traceID":"ce2a5e00d0c9e33c1033a05d8b66f152","warnings":null},{"duration":15287,"logs":[],"operationName":"GET /items/","processID":"p1","references": [],"spanID":"4b29087ce1772eae","startTime":1775065822808091,"tags": [{"key":"span.kind","type":"string","value":"server"},{"key":"otel.scope.name","type":"string","value":"opentelemetry.instrumentation.fastapi"},{"key":"otel.scope.version","type":"string","value":"0.61b0"},{"key":"http.flavor","type":"string","value":"1.1"},{"key":"http.host","type":"string","value":"172.21.0.7:8000"},{"key":"http.method","type":"string","value":"GET"},{"key":"http.route","type":"string","value":"/items/"},{"key":"http.scheme","type":"string","value":"http"},{"key":"http.server_name","type":"string","value":"10.93.25.40:42002"},{"key":"http.target","type":"string","value":"/items/"},{"key":"http.url","type":"string","value":"http://10.93.25.40:42002/items/"},{"key":"http.user_agent","type":"string","value":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:149.0) Gecko/20100101 Firefox/149.0"},{"key":"net.host.port","type":"string","value":"8000"},{"key":"net.peer.ip","type":"string","value":"172.21.0.8"},{"key":"http.status_code","type":"string","value":"200"},{"key":"net.peer.port","type":"string","value":"39052"}],"traceID":"ce2a5e00d0c9e33c1033a05d8b66f152","warnings":null},{"duration":577,"logs":[],"operationName":"BEGIN;","processID":"p1","references": [{"refType":"CHILD_OF","spanID":"4b29087ce1772eae","traceID":"ce2a5e00d0c9e33c1033a05d8b66f152"}],"spanID":"3b7edb2b9e37243c","startTime":1775065822814118,"tags": [{"key":"span.kind","type":"string","value":"client"},{"key":"otel.scope.name","type":"string","value":"opentelemetry.instrumentation.asyncpg"},{"key":"otel.scope.version","type":"string","value":"0.61b0"},{"key":"db.name","type":"string","value":"db-lab-8"},{"key":"db.statement","type":"string","value":"BEGIN;"},{"key":"db.system","type":"string","value":"postgresql"},{"key":"db.user","type":"string","value":"postgres"},{"key":"net.peer.name","type":"string","value":"postgres"},{"key":"net.peer.port","type":"string","value":"5432"},{"key":"net.transport","type":"string","value":"ip_tcp"}],"traceID":"ce2a5e00d0c9e33c1033a05d8b66f152","warnings":null},{"duration":532,"logs":[],"operationName":"ROLLBACK;","processID":"p1","references": [{"refType":"CHILD_OF","spanID":"4b29087ce1772eae","traceID":"ce2a5e00d0c9e33c1033a05d8b66f152"}],"spanID":"275fd1a726b840e3","startTime":1775065822824267,"tags": [{"key":"span.kind","type":"string","value":"client"},{"key":"otel.scope.name","type":"string","value":"opentelemetry.instrumentation.asyncpg"},{"key":"otel.scope.version","type":"string","value":"0.61b0"},{"key":"db.name","type":"string","value":"db-lab-8"},{"key":"db.statement","type":"string","value":"ROLLBACK;"},{"key":"db.system","type":"string","value":"postgresql"},{"key":"db.user","type":"string","value":"postgres"},{"key":"net.peer.name","type":"string","value":"postgres"},{"key":"net.peer.port","type":"string","value":"5432"},{"key":"net.transport","type":"string","value":"ip_tcp"}],"traceID":"ce2a5e00d0c9e33c1033a05d8b66f152","warnings":null}],"traceID":"ce2a5e00d0c9e33c1033a05d8b66f152","warnings": null}],"errors":null,"limit": 0,"offset": 0,"total":1}
 
-{"data":[{"processes": {"p1":{"serviceName":"Learning Management Service","tags": [{"key":"telemetry.auto.version","type":"string","value":"0.61b0"},{"key":"telemetry.sdk.language","type":"string","value":"python"},{"key":"telemetry.sdk.name","type":"string","value":"opentelemetry"},{"key":"telemetry.sdk.version","type":"string","value":"1.40.0"}]}},"spans": [{"duration":108,"logs":[],"operationName":"GET /items/ http send","processID":"p1","references": [{"refType":"CHILD_OF","spanID":"7cde46da729d452b","traceID":"e1ddbe285f4a879582f8f2fdd72c4e01"}],"spanID":"8de524ba474358ca","startTime":1775066606463773,"tags": [{"key":"span.kind","type":"string","value":"internal"},{"key":"otel.scope.name","type":"string","value":"opentelemetry.instrumentation.fastapi"},{"key":"otel.scope.version","type":"string","value":"0.61b0"},{"key":"asgi.event.type","type":"string","value":"http.response.start"},{"key":"http.status_code","type":"string","value":"404"}],"traceID":"e1ddbe285f4a879582f8f2fdd72c4e01","warnings":null},{"duration":58,"logs":[],"operationName":"GET /items/ http send","processID":"p1","references": [{"refType":"CHILD_OF","spanID":"7cde46da729d452b","traceID":"e1ddbe285f4a879582f8f2fdd72c4e01"}],"spanID":"54a65c86978bcec4","startTime":1775066606464961,"tags": [{"key":"span.kind","type":"string","value":"internal"},{"key":"otel.scope.name","type":"string","value":"opentelemetry.instrumentation.fastapi"},{"key":"otel.scope.version","type":"string","value":"0.61b0"},{"key":"asgi.event.type","type":"string","value":"http.response.body"}],"traceID":"e1ddbe285f4a879582f8f2fdd72c4e01","warnings":null},{"duration":44,"logs":[],"operationName":"GET /items/ http send","processID":"p1","references": [{"refType":"CHILD_OF","spanID":"7cde46da729d452b","traceID":"e1ddbe285f4a879582f8f2fdd72c4e01"}],"spanID":"bcb7e2022727e8d7","startTime":1775066606465261,"tags": [{"key":"span.kind","type":"string","value":"internal"},{"key":"otel.scope.name","type":"string","value":"opentelemetry.instrumentation.fastapi"},{"key":"otel.scope.version","type":"string","value":"0.61b0"},{"key":"asgi.event.type","type":"string","value":"http.response.body"}],"traceID":"e1ddbe285f4a879582f8f2fdd72c4e01","warnings":null},{"duration":301109,"logs":[{"timestamp":1775066606460962,"fields":[{"key":"exception.escaped","type":"string","value":"False"},{"key":"exception.message","type":"string","value":"[Errno -2] Name or service not known"},{"key":"exception.type","type":"string","value":"socket.gaierror"},{"key":"event","type":"string","value":"exception"},{"key":"exception.stacktrace","type":"string","value":"Traceback (most recent call last):\n  File \"/app/.venv/lib/python3.14/site-packages/opentelemetry/trace/**init**.py\", line 619, in use_span\n    yield span\n  File \"/app/.venv/lib/python3.14/site-packages/opentelemetry/sdk/trace/**init**.py\", line 1173, in start_as_current_span\n    yield span\n  File \"/app/.venv/lib/python3.14/site-packages/opentelemetry/instrumentation/sqlalchemy/engine.py\", line 129, in _wrap_connect_internal\n    return func(*args, **kwargs)\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py\", line 3293, in connect\n    return self._connection_cls(self)\n           ~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py\", line 143, in **init**\n    self._dbapi_connection = engine.raw_connection()\n                             ~~~~~~~~~~~~~~~~~~~~~^^\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py\", line 3317, in raw_connection\n    return self.pool.connect()\n           ~~~~~~~~~~~~~~~~~^^\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/pool/base.py\", line 448, in connect\n    return_ConnectionFairy._checkout(self)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/pool/base.py\", line 1272, in_checkout\n    fairy = _ConnectionRecord.checkout(pool)\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/pool/base.py\", line 717, in checkout\n    with util.safe_reraise():\n         ~~~~~~~~~~~~~~~~~^^\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/util/langhelpers.py\", line 121, in **exit**\n    raise exc_value.with_traceback(exc_tb)\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/pool/base.py\", line 715, in checkout\n    dbapi_connection = rec.get_connection()\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/pool/base.py\", line 866, in get_connection\n    self.__connect()\n    ~~~~~~~~~~~~~~^^\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/pool/base.py\", line 900, in__connect\n    with util.safe_reraise():\n         ~~~~~~~~~~~~~~~~~^^\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/util/langhelpers.py\", line 121, in **exit**\n    raise exc_value.with_traceback(exc_tb)\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/pool/base.py\", line 896, in __connect\n    self.dbapi_connection = connection = pool._invoke_creator(self)\n                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/engine/create.py\", line 665, in connect\n    return dialect.connect(*mutable_cargs,**mutable_cparams)\n           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py\", line 630, in connect\n    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501\n           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py\", line 955, in connect\n    await_only(creator_fn(*arg,**kw)),\n    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/util/_concurrency_py3k.py\", line 132, in await_only\n    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^\n  File \"/app/.venv/lib/python3.14/site-packages/sqlalchemy/util/_concurrency_py3k.py\", line 196, in greenlet_spawn\n    value = await result\n            ^^^^^^^^^^^^\n  File \"/app/.venv/lib/python3.14/site-packages/asyncpg/connection.py\", line 2443, in connect\n    return await connect_utils._connect(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...\u003c22 lines>...\n    )\n    ^\n  File \"/app/.venv/lib/python3.14/site-packages/asyncpg/connect_utils.py\", line 1249, in_connect\n    raise last_error or exceptions.TargetServerAttributeNotMatched(\n    ...\u003c2 lines>...\n    )\n  File \"/app/.venv/lib/python3.14/site-packages/asyncpg/connect_utils.py\", line 1218, in _connect\n    conn = await_connect_addr(\n           ^^^^^^^^^^^^^^^^^^^^\n    ...\u003c6 lines>...\n    )\n    ^\n  File \"/app/.venv/lib/python3.14/site-packages/asyncpg/connect_utils.py\", line 1054, in _connect_addr\n    return await__connect_addr(params, True, *args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/app/.venv/lib/python3.14/site-packages/asyncpg/connect_utils.py\", line 1099, in __connect_addr\n    tr, pr = await connector\n             ^^^^^^^^^^^^^^^\n  File \"/app/.venv/lib/python3.14/site-packages/asyncpg/connect_utils.py\", line 969, in _create_ssl_connection\n    tr, pr = await loop.create_connection(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...\u003c2 lines>...\n        host, port)\n        ^^^^^^^^^^^\n  File \"uvloop/loop.pyx\", line 1982, in create_connection\nsocket.gaierror: [Errno -2] Name or service not known\n"}]}],"operationName":"connect","processID":"p1","references": [{"refType":"CHILD_OF","spanID":"7cde46da729d452b","traceID":"e1ddbe285f4a879582f8f2fdd72c4e01"}],"spanID":"86ca0e35ea218759","startTime":1775066606159902,"tags": [{"key":"span.kind","type":"string","value":"client"},{"key":"otel.scope.name","type":"string","value":"opentelemetry.instrumentation.sqlalchemy"},{"key":"otel.scope.version","type":"string","value":"0.61b0"},{"key":"db.name","type":"string","value":"db-lab-8"},{"key":"db.system","type":"string","value":"postgresql"},{"key":"db.user","type":"string","value":"postgres"},{"key":"net.peer.name","type":"string","value":"postgres"},{"key":"net.peer.port","type":"string","value":"5432"},{"key":"error","type":"string","value":"true"},{"key":"otel.status_description","type":"string","value":"gaierror: [Errno -2] Name or service not known"}],"traceID":"e1ddbe285f4a879582f8f2fdd72c4e01","warnings":null},{"duration":308271,"logs":[],"operationName":"GET /items/","processID":"p1","references": [],"spanID":"7cde46da729d452b","startTime":1775066606157136,"tags": [{"key":"span.kind","type":"string","value":"server"},{"key":"otel.scope.name","type":"string","value":"opentelemetry.instrumentation.fastapi"},{"key":"otel.scope.version","type":"string","value":"0.61b0"},{"key":"http.flavor","type":"string","value":"1.1"},{"key":"http.host","type":"string","value":"172.21.0.7:8000"},{"key":"http.method","type":"string","value":"GET"},{"key":"http.route","type":"string","value":"/items/"},{"key":"http.scheme","type":"string","value":"http"},{"key":"http.server_name","type":"string","value":"backend:8000"},{"key":"http.status_code","type":"string","value":"404"},{"key":"http.target","type":"string","value":"/items/"},{"key":"http.url","type":"string","value":"http://backend:8000/items/"},{"key":"http.user_agent","type":"string","value":"python-httpx/0.28.1"},{"key":"net.host.port","type":"string","value":"8000"},{"key":"net.peer.ip","type":"string","value":"172.21.0.10"},{"key":"net.peer.port","type":"string","value":"41386"}],"traceID":"e1ddbe285f4a879582f8f2fdd72c4e01","warnings":null}],"traceID":"e1ddbe285f4a879582f8f2fdd72c4e01","warnings": null}],"errors":null,"limit": 0,"offset": 0,"total":1}
+{
+  "trace_id": "a84f124e82eb8b402728795af1f59f86",
+  "service": "Learning Management Service",
+  "status": "success",
+  "summary": {
+    "endpoint": "GET /items/",
+    "http_status": 200,
+    "total_duration_ms": 97.7,
+    "timestamp": "2026-04-01T19:16:11.165Z",
+    "client": "python-httpx/0.28.1",
+    "client_ip": "172.21.0.10:55662"
+  },
+  "spans": [
+    {
+      "span_id": "d169a068b33ba60d",
+      "operation": "GET /items/",
+      "kind": "server",
+      "duration_ms": 97.7,
+      "start_time": 1775068171165634,
+      "tags": {
+        "http.method": "GET",
+        "http.url": "http://backend:8000/items/",
+        "http.status_code": 200,
+        "http.host": "172.21.0.7:8000"
+      }
+    },
+    {
+      "span_id": "63afa32567deb2f8",
+      "operation": "connect",
+      "kind": "client",
+      "duration_ms": 60.5,
+      "start_time": 1775068171168851,
+      "tags": {
+        "db.system": "postgresql",
+        "db.name": "db-lab-8",
+        "db.user": "postgres",
+        "net.peer.name": "postgres",
+        "net.peer.port": 5432
+      }
+    },
+    {
+      "span_id": "accc5ebfc1484d94",
+      "operation": "BEGIN;",
+      "kind": "client",
+      "duration_ms": 5.0,
+      "start_time": 1775068171230218,
+      "tags": {
+        "db.system": "postgresql",
+        "db.statement": "BEGIN;"
+      }
+    },
+    {
+      "span_id": "63ed0d661991c7a1",
+      "operation": "SELECT db-lab-8",
+      "kind": "client",
+      "duration_ms": 30.2,
+      "start_time": 1775068171230033,
+      "tags": {
+        "db.system": "postgresql",
+        "db.name": "db-lab-8",
+        "db.statement": "SELECT item.id, item.type, item.parent_id, item.title, item.description, item.attributes, item.created_at FROM item"
+      }
+    },
+    {
+      "span_id": "8bcc657f69d37366",
+      "operation": "ROLLBACK;",
+      "kind": "client",
+      "duration_ms": 0.3,
+      "start_time": 1775068171265821,
+      "tags": {
+        "db.system": "postgresql",
+        "db.statement": "ROLLBACK;"
+      }
+    },
+    {
+      "span_id": "d7e9a9558d39508d",
+      "operation": "GET /items/ http send",
+      "kind": "internal",
+      "duration_ms": 0.1,
+      "start_time": 1775068171262535,
+      "tags": {
+        "http.status_code": 200,
+        "asgi.event.type": "http.response.start"
+      }
+    }
+  ],
+  "errors": []
+}
+
+{
+    "_msg": "request_completed",
+    "_stream": "{service.name=\"Learning Management Service\",telemetry.auto.version=\"0.61b0\",telemetry.sdk.language=\"python\",telemetry.sdk.name=\"opentelemetry\",telemetry.sdk.version=\"1.40.0\"}",
+    "_stream_id": "00000000000000004bfe2483b590ccd2aa73fe0838569f74",
+    "_time": "2026-04-01T18:44:10.418708736Z",
+    "duration_ms": "442",
+    "event": "request_completed",
+    "method": "GET",
+    "otelServiceName": "Learning Management Service",
+    "otelSpanID": "496d1c14cf17ba4e",
+    "otelTraceID": "a2784dc95db6df8cab87efdfe293abb7",
+    "otelTraceSampled": "true",
+    "path": "/items/",
+    "scope.name": "lms_backend.main",
+    "scope.version": "unknown",
+    "service.name": "Learning Management Service",
+    "severity": "INFO",
+    "span_id": "496d1c14cf17ba4e",
+    "status": "404",
+    "telemetry.auto.version": "0.61b0",
+    "telemetry.sdk.language": "python",
+    "telemetry.sdk.name": "opentelemetry",
+    "telemetry.sdk.version": "1.40.0",
+    "trace_id": "a2784dc95db6df8cab87efdfe293abb7"
+}
+
 backend-1  | 2026-04-01 17:23:04,025 INFO [lms_backend.main] [main.py:62] [trace_id=232fbd533088b61434541b78c293a0e5 span_id=98c1660ebe4221b2 resource.service.name=Learning Management Service trace_sampled=True] - request_started
 backend-1  | 2026-04-01 17:23:04,026 INFO [lms_backend.auth] [auth.py:30] [trace_id=232fbd533088b61434541b78c293a0e5 span_id=98c1660ebe4221b2 resource.service.name=Learning Management Service trace_sampled=True] - auth_success
 backend-1  | 2026-04-01 17:23:04,026 INFO [lms_backend.db.items] [items.py:16] [trace_id=232fbd533088b61434541b78c293a0e5 span_id=98c1660ebe4221b2 resource.service.name=Learning Management Service trace_sampled=True] - db_query
