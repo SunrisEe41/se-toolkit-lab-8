@@ -47,9 +47,9 @@ class ObsClient:
     ) -> dict:
         """Count errors in VictoriaLogs over a time window."""
         client = await self._get_client()
-        query = "severity:ERROR"
+        query = "severity:ERROR | stats count()"
         if service:
-            query = f'service.name:"{service}" severity:ERROR'
+            query = f'service.name:"{service}" severity:ERROR | stats count()'
         url = f"{self.victorialogs_url}/select/logsql/stats_query"
         params = {"query": query, "_time": time_range}
         response = await client.get(url, params=params)
@@ -63,8 +63,12 @@ class ObsClient:
         client = await self._get_client()
         url = f"{self.victoriatraces_url}/select/jaeger/api/traces"
         params = {"limit": limit}
+        # VictoriaTraces requires service parameter
         if service:
             params["service"] = service
+        else:
+            # Use a common service if none specified
+            params["service"] = "Learning Management Service"
         response = await client.get(url, params=params)
         response.raise_for_status()
         data = response.json()
