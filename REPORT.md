@@ -209,7 +209,24 @@ I have access to extensible skills including:
 ## Task 3A — Structured logging
 
 <!-- Paste happy-path and error-path log excerpts, VictoriaLogs query screenshot -->
+backend-1  | 2026-04-01 17:23:04,025 INFO [lms_backend.main] [main.py:62] [trace_id=232fbd533088b61434541b78c293a0e5 span_id=98c1660ebe4221b2 resource.service.name=Learning Management Service trace_sampled=True] - request_started
+backend-1  | 2026-04-01 17:23:04,026 INFO [lms_backend.auth] [auth.py:30] [trace_id=232fbd533088b61434541b78c293a0e5 span_id=98c1660ebe4221b2 resource.service.name=Learning Management Service trace_sampled=True] - auth_success
+backend-1  | 2026-04-01 17:23:04,026 INFO [lms_backend.db.items] [items.py:16] [trace_id=232fbd533088b61434541b78c293a0e5 span_id=98c1660ebe4221b2 resource.service.name=Learning Management Service trace_sampled=True] - db_query
+backend-1  | INFO:     172.21.0.10:47952 - "GET /items/ HTTP/1.1" 200 OK
+backend-1  | 2026-04-01 17:23:04,029 INFO [lms_backend.main] [main.py:74] [trace_id=232fbd533088b61434541b78c293a0e5 span_id=98c1660ebe4221b2 resource.service.name=Learning Management Service trace_sampled=True] - request_completed
+backend-1  | INFO:     172.21.0.10:47952 - "GET /items/ HTTP/1.1" 200
 
+
+backend-1  | 2026-04-01 17:40:16,979 INFO [lms_backend.main] [main.py:62] [trace_id=ca742ac17f0139b3bb9b9cddf40d9429 span_id=d89855409d212f01 resource.service.name=Learning Management Service trace_sampled=True] - request_started
+backend-1  | 2026-04-01 17:40:16,980 INFO [lms_backend.auth] [auth.py:30] [trace_id=ca742ac17f0139b3bb9b9cddf40d9429 span_id=d89855409d212f01 resource.service.name=Learning Management Service trace_sampled=True] - auth_success
+backend-1  | 2026-04-01 17:40:16,981 INFO [lms_backend.db.items] [items.py:16] [trace_id=ca742ac17f0139b3bb9b9cddf40d9429 span_id=d89855409d212f01 resource.service.name=Learning Management Service trace_sampled=True] - db_query
+backend-1  | 2026-04-01 17:40:17,487 ERROR [lms_backend.db.items] [items.py:23] [trace_id=ca742ac17f0139b3bb9b9cddf40d9429 span_id=d89855409d212f01 resource.service.name=Learning Management Service trace_sampled=True] - db_query
+backend-1  | 2026-04-01 17:40:17,488 WARNING [lms_backend.routers.items] [items.py:23] [trace_id=ca742ac17f0139b3bb9b9cddf40d9429 span_id=d89855409d212f01 resource.service.name=Learning Management Service trace_sampled=True] - items_list_failed_as_not_found
+backend-1  | 2026-04-01 17:40:17,489 INFO [lms_backend.main] [main.py:74] [trace_id=ca742ac17f0139b3bb9b9cddf40d9429 span_id=d89855409d212f01 resource.service.name=Learning Management Service trace_sampled=True] - request_completed
+backend-1  | INFO:     172.21.0.10:37500 - "GET /items/ HTTP/1.1" 404
+backend-1  | INFO:     172.21.0.10:37500 - "GET /items/ HTTP/1.1" 404 Not Found
+
+![alt text](image-3.png)
 ## Task 3B — Traces
 
 <!-- Screenshots: healthy trace span hierarchy, error trace -->
