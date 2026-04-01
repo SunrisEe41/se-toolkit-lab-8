@@ -237,6 +237,71 @@ backend-1  | INFO:     172.21.0.10:37500 - "GET /items/ HTTP/1.1" 404 Not Found
 ## Task 3C — Observability MCP tools
 
 <!-- Paste agent responses to "any errors in the last hour?" under normal and failure conditions -->
+Yes, there were **5 errors** in the LMS backend in the last 10 minutes. Here's what I found:
+
+## Errors Summary
+
+| Trace ID | Error Type | Description |
+|----------|------------|-------------|
+| `e1ddbe285f4a879582f8f2fdd72c4e01` | `socket.gaierror` | DNS resolution failure: `[Errno -2] Name or service not known` when connecting to postgres |
+| `4dcb759a99ffdc99beed48d1d49d31cc` | `asyncpg.InterfaceError` | `connection is closed` during a SELECT query |
+
+## Details
+
+**Most Critical Issue:**
+
+- **DNS/Connection Failure**: The LMS backend failed to resolve the hostname `postgres` when attempting to connect to the database. This caused a `GET /items/` request to return a 404 error after a 308ms timeout.
+
+**Secondary Issue:**
+
+- **Closed Connection**: A SELECT query failed because the database connection was already closed, also resulting in a 404 response.
+
+## Affected Requests
+
+- `GET /items/` - returned 404 (multiple occurrences)
+- Database: `db-lab-8` on `postgres:5432`
+
+The errors appear to be related to **database connectivity issues** - either DNS resolution problems or connection pool instability. The service has since recovered (recent traces show successful 200 responses), but you may want to check:
+
+1. PostgreSQL service health
+2. Network/DNS configuration between backend and database
+3. Connection pool settings
+
+Yes, there are **11 errors** in the LMS backend in the last 10 minutes. Here's what I found:
+
+## Main Issue: Database Connection Failures
+
+The errors are caused by **DNS resolution failures** when trying to connect to PostgreSQL:
+
+| Error Type | Count | Impact |
+|------------|-------|--------|
+| `socket.gaierror: [Errno -2] Name or service not known` | Multiple | Failed DB connections |
+| HTTP 500 on `/pipeline/sync` | 1 | Sync pipeline failure |
+| HTTP 404 on `/items/` | Several | Failed item requests |
+
+## Root Cause
+
+The backend service cannot resolve the hostname `postgres` (port 5432) consistently. The stack trace shows:
+
+```
+asyncpg.connect_utils → _connect_addr → socket.gaierror: [Errno -2] Name or service not known
+```
+
+This indicates a **networking/DNS issue** between the LMS backend container and the PostgreSQL database container.
+
+## Affected Requests
+
+- **POST /pipeline/sync** - Returned 500, failed to sync items
+- **GET /items/** - Multiple 404 responses due to DB connection failures
+- Some requests succeeded (HTTP 200) when the connection was available
+
+## Recommendation
+
+Check the Docker/Kubernetes networking configuration:
+
+1. Verify the `postgres` service is running and healthy
+2. Check DNS resolution within the backend container
+3. Review network policies or service discovery configuration
 
 ## Task 4A — Multi-step investigation
 
