@@ -477,3 +477,50 @@ The LMS backend remains unhealthy with persistent errors. The issue is ongoing s
      2. Code fix (diff or description)
      3. Post-fix response to "What went wrong?" showing the real underlying failure
      4. Healthy follow-up report or transcript after recovery -->
+## Investigation Summary
+
+**Log Evidence:**
+
+- **28 errors** in the last 10 minutes
+- Error type: `socket.gaierror: [Errno -2] Name or service not known`
+- Service: **Learning Management Service**
+- Event: Database connection failed
+
+**Trace Evidence:**
+
+- **Trace ID:** `09cfeb1ba7279de019e4c7a75df26354`
+- **Total duration:** 710ms (failed request)
+- **Failed span:** `connect` to postgres:5432 (702ms)
+- **HTTP span:** Shows 404 status but root cause is DB failure
+
+**Affected Service:** Learning Management Service (backend)
+
+**Root Failing Operation:** PostgreSQL connection — DNS resolution failed for hostname `postgres`
+
+**Key Discrepancy:** The HTTP response returned **404 "Items not found"** but the actual error is a **database connection failure**. The backend error handler is misreporting DB connection errors as 404 instead of 503.
+
+---
+
+## What Happened
+
+The LMS backend tried to fetch items from the database (`GET /items/`), but it couldn't connect to PostgreSQL because:
+
+1. The backend attempted to resolve the hostname `postgres`
+2. DNS resolution failed (`socket.gaierror: [Errno -2] Name or service not known`)
+3. The database connection timed out after ~700ms
+4. The error was caught and incorrectly returned as HTTP 404 instead of 503
+
+## Likely Causes
+
+- The PostgreSQL container/service is **not running**
+- The `postgres` hostname is **not resolvable** (Docker network issue)
+- Database service crashed or was restarted
+
+## Recommended Fix
+
+1. Check if the PostgreSQL container is running: `docker ps | grep postgres`
+2. Verify Docker network connectivity between backend and database
+3. Restart the database service if needed
+4. Restart the LMS backend after the database is healthy
+![alt text](image-7.png)
+
