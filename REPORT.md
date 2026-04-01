@@ -423,6 +423,38 @@ Check the Docker/Kubernetes networking configuration:
 ## Task 4A — Multi-step investigation
 
 <!-- Paste the agent's response to "What went wrong?" showing chained log + trace investigation -->
+## Investigation Summary
+
+**Log Evidence:**
+
+- **18 errors** in the last 10 minutes
+- Error type: `socket.gaierror: [Errno -2] Name or service not known`
+- Service: **Learning Management Service** (backend)
+- Event: `db_query` failed during PostgreSQL connection attempt
+
+**Trace Evidence:**
+
+- **Failed span**: `connect` to `postgres:5432` (duration: ~300-420ms, all failed)
+- **HTTP span**: Returns `404` status code but root cause is DB connection failure
+- **Database**: `db-lab-8`, user: `postgres`
+
+**Affected Service:** Learning Management Service (backend)
+
+**Root Failing Operation:** PostgreSQL connection — **DNS resolution failed** for hostname `postgres`
+
+**Key Discrepancy:** The HTTP response returns `404 Not Found` but the actual error is a **database connection failure**. The backend error handler is misreporting DB connection errors as 404 instead of 503 (Service Unavailable).
+
+---
+
+## Root Cause
+
+The LMS backend cannot connect to the PostgreSQL database because it cannot resolve the hostname `postgres`. This typically means:
+
+1. **The PostgreSQL container/service is not running**
+2. **Network connectivity issue** between the backend and database containers
+3. **DNS/service discovery is not configured** properly in the container environment
+
+The database hostname `postgres` is not resolvable, causing all LMS API requests that need database access to fail.
 
 ## Task 4B — Proactive health check
 
