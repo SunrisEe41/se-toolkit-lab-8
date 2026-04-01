@@ -19,7 +19,40 @@ You have access to VictoriaLogs and VictoriaTraces via MCP tools. Use these tool
 
 ## Strategy Rules
 
-### When the user asks about errors or failures
+### When the user asks "What went wrong?" or "Check system health" or "Diagnose the issue"
+
+Follow this **investigation flow** in order:
+
+1. **Check error count** in a fresh recent window:
+
+   ```
+   obs_logs_error_count(time_range="10m")
+   ```
+
+2. **Search recent error logs** to find the actual error:
+
+   ```
+   obs_logs_search(query="severity:ERROR", time_range="10m", limit=10)
+   ```
+
+3. **Extract trace_id** from the error log results — look for the `trace_id` field in any error entry.
+
+4. **Fetch the full trace** using that trace_id:
+
+   ```
+   obs_traces_get(trace_id="<extracted_trace_id>")
+   ```
+
+5. **Summarize findings** in a single coherent explanation that includes:
+   - **Log evidence**: What the error logs show (error type, message, timestamp)
+   - **Trace evidence**: What the trace reveals (which spans failed, duration, affected operations)
+   - **Affected service**: Name the service that failed (e.g., "Learning Management Service")
+   - **Root failing operation**: The specific operation that failed (e.g., "PostgreSQL connection", "SELECT query")
+   - **Key discrepancy** (if any): Note if HTTP response status doesn't match the actual error (e.g., "404 returned but root cause is DB connection failure")
+
+**Important:** Do NOT dump raw JSON. Synthesize the evidence into a clear narrative.
+
+### When the user asks about errors or failures (general)
 
 1. **First**, search logs for errors:
 
@@ -101,6 +134,39 @@ You have access to VictoriaLogs and VictoriaTraces via MCP tools. Use these tool
 - **Highlight errors**: Make problems obvious
 
 ## Example Flows
+
+### User: "What went wrong?" (Investigation flow)
+
+```
+You: [call obs_logs_error_count(time_range="10m")]
+→ Found 5 errors in the last 10 minutes
+
+You: [call obs_logs_search(query="severity:ERROR", time_range="10m", limit=5)]
+→ Returns error logs with trace_id: e1ddbe285f4a879582f8f2fdd72c4e01
+
+You: [call obs_traces_get(trace_id="e1ddbe285f4a879582f8f2fdd72c4e01")]
+→ Returns full trace with spans
+
+You: "**Investigation Summary:**
+
+**Log Evidence:**
+- 5 errors in the last 10 minutes
+- Most recent: `socket.gaierror: [Errno -2] Name or service not known`
+- Service: Learning Management Service
+- Event: db_query failed
+
+**Trace Evidence:**
+- Trace ID: e1ddbe285f4a879582f8f2fdd72c4e01
+- Total duration: 308ms (failed)
+- Failed span: `connect` to postgres:5432 (301ms)
+- HTTP span shows 404 status but root cause is DB failure
+
+**Affected Service:** Learning Management Service
+
+**Root Failing Operation:** PostgreSQL connection — DNS resolution failed for hostname `postgres`
+
+**Key Discrepancy:** The HTTP response returned 404 "Items not found" but the actual error is a database connection failure. The backend error handler is misreporting DB connection errors as 404 instead of 503."
+```
 
 ### User: "Any errors in the last hour?"
 

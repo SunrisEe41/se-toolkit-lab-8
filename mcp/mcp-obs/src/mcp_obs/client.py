@@ -47,11 +47,12 @@ class ObsClient:
     ) -> dict:
         """Count errors in VictoriaLogs over a time window."""
         client = await self._get_client()
-        query = "severity:ERROR | stats count()"
+        # VictoriaLogs requires time filter in the query itself for stats
+        query = f"_time:{time_range} severity:ERROR | stats count()"
         if service:
-            query = f'service.name:"{service}" severity:ERROR | stats count()'
+            query = f'_time:{time_range} service.name:"{service}" severity:ERROR | stats count()'
         url = f"{self.victorialogs_url}/select/logsql/stats_query"
-        params = {"query": query, "_time": time_range}
+        params = {"query": query}
         response = await client.get(url, params=params)
         response.raise_for_status()
         return response.json()
