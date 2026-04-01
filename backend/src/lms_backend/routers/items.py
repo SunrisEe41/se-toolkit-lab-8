@@ -20,14 +20,14 @@ async def get_items(session: AsyncSession = Depends(get_session)):
     try:
         return await read_items(session)
     except SQLAlchemyError as exc:
-        # Database errors (connection failure, query errors) should return 503
+        # Database errors (connection failure, query errors) should return 500
         logger.error(
             "items_database_error",
             extra={"event": "items_database_error", "error": str(exc)},
         )
         raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Database service unavailable",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Database error",
         ) from exc
     except Exception as exc:
         # Unexpected errors should return 500
