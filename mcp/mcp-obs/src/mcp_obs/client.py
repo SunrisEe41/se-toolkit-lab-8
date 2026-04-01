@@ -23,6 +23,12 @@ class ObsClient:
             await self._http_client.aclose()
             self._http_client = None
 
+    async def __aenter__(self) -> ObsClient:
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
+        await self.close()
+
     async def logs_search(
         self, query: str, limit: int = 100, time_range: str = "1h"
     ) -> list[dict]:
