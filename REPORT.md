@@ -459,6 +459,17 @@ The database hostname `postgres` is not resolvable, causing all LMS API requests
 ## Task 4B — Proactive health check
 
 <!-- Screenshot or transcript of the proactive health report that appears in the Flutter chat -->
+**🔍 LMS Health Check (2-min window):**
+
+| Metric | Status |
+|--------|--------|
+| Backend Health | ❌ Unhealthy |
+| Error Response | HTTP 404 |
+| Errors (last 2 min) | 16 errors |
+
+The LMS backend remains unhealthy with persistent errors. The issue is ongoing since the previous check.
+
+![alt text](image-6.png)
 
 ## Task 4C — Bug fix and recovery
 
