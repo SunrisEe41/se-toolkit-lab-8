@@ -124,6 +124,87 @@ nanobot-1  | 2026-04-01 16:52:12.991 | INFO     | nanobot.agent.loop:run:280 - A
 
 <!-- Screenshot of a conversation with the agent in the Flutter web app -->
 ![alt text](image-2.png)
+Connected to Nanobot!
+
+Start by asking:
+• What can you do in this system?
+• What tools do you have right now?
+• Ask one question about the LMS or the system state.
+
+I am more than a chat UI only when the agent has tools, skills, and memory. Try discovering those capabilities from the conversation itself.
+
+Show me the scores
+
+I see there are 8 labs available. Please let me know which lab you'd like to see the scores for:
+
+1. **Lab 01** – Products, Architecture & Roles
+2. **Lab 02** — Run, Fix, and Deploy a Backend Service
+3. **Lab 03** — Backend API: Explore, Debug, Implement, Deploy
+4. **Lab 04** — Testing, Front-end, and AI Agents
+5. **Lab 05** — Data Pipeline and Analytics Dashboard
+6. **Lab 06** — Build Your Own Agent
+7. **Lab 07** — Build a Client with an AI Coding Agent
+8. **lab-08**
+
+Just tell me the lab number (e.g., "lab-04" or "Lab 04") and I'll show you the scores!
+
+What can you do in this system?
+
+I'm **nanobot 🐈**, your AI assistant. Here's what I can do in this system:
+
+## 📚 Learning Management System (LMS)
+
+I can access live course data:
+
+- List available labs and enrolled learners
+- Show **pass rates**, **completion rates**, and **submission timelines** for any lab
+- Display **group performance** and **top learners** per lab
+- Check LMS backend health and trigger data syncs
+
+## 📁 File & Workspace Management
+
+- Read, write, and edit files in your workspace
+- List directory contents and explore project structure
+- Execute shell commands (with safety limits)
+
+## 🌐 Web Access
+
+- Search the web for information
+- Fetch and extract content from URLs
+
+## ⏰ Scheduling & Reminders
+
+- Create one-time or recurring reminders via `cron`
+- Manage periodic tasks through `HEARTBEAT.md`
+
+## 💬 Interactive UI (WebChat)
+
+- Present structured choices and confirmations when you need to pick options
+
+## 🧠 Memory System
+
+- Store important facts in `MEMORY.md` (long-term)
+- Log events in `HISTORY.md` (searchable event log)
+
+## 🛠️ Skills
+
+I have access to extensible skills including:
+
+- **lms** – Course data and analytics
+- **memory** – Two-layer memory with grep-style recall
+- **cron** – Scheduled reminders and recurring tasks
+- **structured-ui** – Interactive choice messages
+- **clawhub** – Search and install new skills
+- **skill-creator** – Create or update agent skills
+
+---
+
+**What would you like to do?** For example:
+
+- "Show me the pass rates for lab-04"
+- "Who are the top learners in lab-02?"
+- "Set a reminder for tomorrow at 3pm"
+- "What labs are available?"
 
 ## Task 3A — Structured logging
 
